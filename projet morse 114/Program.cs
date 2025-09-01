@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Runtime.Remoting.Contexts;
+using System.Threading;
 
 namespace projet_morse_114
 {
@@ -10,68 +10,68 @@ namespace projet_morse_114
     {
         static void Main(string[] args)
         {
-            Dictionary<char, string> monDictionnaire = new Dictionary<char, string>();
-
-            // Ajout d'éléments
-            monDictionnaire.Add('a', ".-");
-            monDictionnaire.Add('b', "-...");
-            monDictionnaire.Add('c', "-.-.");
-            monDictionnaire.Add('d', "-..");
-            monDictionnaire.Add('e', ".");
-            monDictionnaire.Add('f', "..-.");
-            monDictionnaire.Add('g', "--.");
-            monDictionnaire.Add('h', "....");
-            monDictionnaire.Add('i', "..");
-            monDictionnaire.Add('j', ".---");
-            monDictionnaire.Add('k', "-.-");
-            monDictionnaire.Add('l', ".-..");
-            monDictionnaire.Add('m', "--");
-            monDictionnaire.Add('n', "-.");
-            monDictionnaire.Add('o', "---");
-            monDictionnaire.Add('p', ".--.");
-            monDictionnaire.Add('q', "--.-");
-            monDictionnaire.Add('r', ".-.");
-            monDictionnaire.Add('s', "...");
-            monDictionnaire.Add('t', "-");
-            monDictionnaire.Add('u', "..-");
-            monDictionnaire.Add('v', "...-");
-            monDictionnaire.Add('w', ".--");
-            monDictionnaire.Add('x', "-..-");
-            monDictionnaire.Add('y', "-.--");
-            monDictionnaire.Add('z', "--..");
-            monDictionnaire.Add(' ', "/");
-            monDictionnaire.Add('0', "-----");
-            monDictionnaire.Add('1', ".----");
-            monDictionnaire.Add('2', "..---");
-            monDictionnaire.Add('3', "...--");
-            monDictionnaire.Add('4', "....-");
-            monDictionnaire.Add('5', ".....");
-            monDictionnaire.Add('6', "-....");
-            monDictionnaire.Add('7', "--...");
-            monDictionnaire.Add('8', "---..");
-            monDictionnaire.Add('9', "----.");
-
-
-            Console.WriteLine("Bonjour ce petit programme sert à convertir n'importe qu'elle phrase en Morse, pour y acceder appuyer sur Enter");
-            int touches = Console.Read();
-            if (touches == (int)ConsoleKey.Enter)
+            Dictionary<char, string> monDictionnaire = new Dictionary<char, string>()
             {
-                Console.Clear();
-            }
+                {'a', ".-"}, {'b', "-..."}, {'c', "-.-."}, {'d', "-.."}, {'e', "."},
+                {'f', "..-."}, {'g', "--."}, {'h', "...."}, {'i', ".."}, {'j', ".---"},
+                {'k', "-.-"}, {'l', ".-.."}, {'m', "--"}, {'n', "-."}, {'o', "---"},
+                {'p', ".--."}, {'q', "--.-"}, {'r', ".-."}, {'s', "..."}, {'t', "-"},
+                {'u', "..-"}, {'v', "...-"}, {'w', ".--"}, {'x', "-..-"}, {'y', "-.--"},
+                {'z', "--.."}, {' ', "/"}, {'0', "-----"}, {'1', ".----"}, {'2', "..---"},
+                {'3', "...--"}, {'4', "....-"}, {'5', "....."}, {'6', "-...."},
+                {'7', "--..."}, {'8', "---.."}, {'9', "----."}, {'.', ".-.-.-"}, {',',"--..--"}, {'?', "..--.."},
+                {'!', "-.-.--"}, {'/', "-..-."}, {'(', "-.--."}, {')', "-.--.-"}, {'&', ".-..."}, {':', "---..."},
+                {';', "-.-.-."}, {'=', "-...-"}, {'-', "-....-"}, {'_', "..--.-"}, {'"', ".-..-."}, {'+', ".-.-."}
+            };
 
+            Console.WriteLine("Bonjour, ce programme convertit une phrase en Morse. Appuyez sur Entrée pour continuer.");
+            Console.ReadLine();
+            Console.Clear();
 
-            Console.Write("Veuillez entrer votre votre phrase à convertir en morse :");
+            Console.Write("Entrez votre phrase à convertir : ");
             string phrase = Console.ReadLine();
 
+            string morsePhrase = "";
+
+            Console.WriteLine("Veuillez entrer la phrase a convertir");
+            foreach (char lettre in phrase.ToLower()) // déclare une variable qui va chercher les lettres similaires a celle dans la bibliothèque
+            {
+                if (monDictionnaire.ContainsKey(lettre)) // vérifie si il y a des lettres similiaire a celle dans la bibliothèque 
+                {
+                    string morse = monDictionnaire[lettre]; //déclare une variable pour dire que morse est égal au vrai morse dans le dictionnaire
+                    morsePhrase += morse + " ";
+                    Console.Write(morse + " "); // écrit le morse dans la console
+                }
+                else
+                {
+                    Console.Write(" inconnu"); // affiche sa pour un caractère inconnue
+                }
+            }
+
+            foreach (char symbole in morsePhrase) // lance un foreach pour détecter les symbole dans la variable morsePhrase
+            {
+                if (symbole == '.') //si il y a un . dans symbole alors sa lance un beep
+                {
+                    Console.Beep(500, 200); // point = beep court
+                }
+                else if (symbole == '-')
+                {
+                    Console.Beep(500, 500); // tiret = beep long
+                }
+                else if (symbole == '/')
+                {
+                    Thread.Sleep(500); // séparation des mots
+                }
+                else if (symbole == ' ')
+                {
+                    Thread.Sleep(100); // pause entre lettres
+                }
+            }
+            string FilePath = "C:\\Users\\po66sxd\\Desktop\\file.txt";
+            File.WriteAllText(FilePath, morsePhrase);
 
 
-
-
-
-
-
-
-            Console.ReadLine();
+            Console.ReadLine(); //affiche tout dans la console
         }
     }
 }
