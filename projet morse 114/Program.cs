@@ -10,6 +10,46 @@ namespace projet_morse_114
     {
         static void Main(string[] args)
         {
+            int choix = 0;
+            Console.WriteLine("=== Couteau Suisse – Utilitaires ===");
+            Console.WriteLine("1. Convertir du texte en code Morse");
+            Console.WriteLine("2. Convertir des nombres entre différentes bases (Décimal <> Binaire <> Octal)");
+            Console.WriteLine("3. (à venir)");
+            Console.WriteLine("4. Quitter le programme");
+            Console.Write("Entrer votre choix :");
+
+            choix = Convert.ToInt32(Console.ReadLine());
+
+            if (choix == 1)
+            {
+                Morse();
+            }
+
+            if (choix == 2)
+            {
+                Convertisseur();
+            }
+
+            if (choix == 3)
+            {
+                Console.WriteLine("en cours de dévellopement");
+            }
+
+            if(choix == 4)
+            {
+                Environment.Exit(0);
+            }
+
+            
+
+
+
+
+            Console.ReadLine(); //affiche tout dans la console
+        }
+
+        static void Morse()
+        {
             Dictionary<char, string> monDictionnaire = new Dictionary<char, string>()
             {
                 {'a', ".-"}, {'b', "-..."}, {'c', "-.-."}, {'d', "-.."}, {'e', "."},
@@ -23,11 +63,7 @@ namespace projet_morse_114
                 {'!', "-.-.--"}, {'/', "-..-."}, {'(', "-.--."}, {')', "-.--.-"}, {'&', ".-..."}, {':', "---..."},
                 {';', "-.-.-."}, {'=', "-...-"}, {'-', "-....-"}, {'_', "..--.-"}, {'"', ".-..-."}, {'+', ".-.-."}
             };
-
-            Console.WriteLine("Bonjour, ce programme convertit une phrase en Morse. Appuyez sur Entrée pour continuer.");
-            Console.ReadLine();
             Console.Clear();
-
             Console.Write("Entrez votre phrase à convertir : ");
             string phrase = Console.ReadLine();
 
@@ -69,9 +105,104 @@ namespace projet_morse_114
             }
             string FilePath = "C:\\Users\\po66sxd\\Desktop\\file.txt";
             File.WriteAllText(FilePath, morsePhrase);
+        }
+
+        static void Convertisseur()
+        {
+            Console.Clear();
+            int choixconvert = 0;
+            Console.WriteLine("=== Convertisseur de bases ===");
+            Console.WriteLine("1. Décimal > Binaire");
+            Console.WriteLine("2. Binaire > Décimal");
+            Console.WriteLine("3. Binaire > Octal");
+            Console.WriteLine("4. Octal > Binaire");
+            Console.WriteLine();
+
+            Console.Write("Entrer votre choix :");
 
 
-            Console.ReadLine(); //affiche tout dans la console
+            choixconvert = Convert.ToInt32(Console.ReadLine()); // récupère le chiffre taper par l'utilisateur 
+
+
+            // Convertion Décimal en Binaire
+            if (choixconvert == 1) 
+            {
+                int decimalbinaire = 0; // création d'une variable
+                Console.Write("Entrez un nombre décimal : "); 
+                decimalbinaire = Convert.ToInt32(Console.ReadLine());//récupère ce que l'utilisateur à écrit
+                string resutatbinairedecimal = "";// création de la variable réponse
+                do
+                {
+                    if (decimalbinaire % 2 == 0) // verifie si c'est pas divisible par 2
+                    {
+                        resutatbinairedecimal = "0" + resutatbinairedecimal;//rajoute un 1 à la variable si c'est divisible par 2
+                    }
+                    else
+                    {
+                        resutatbinairedecimal = "1" + resutatbinairedecimal;//rajoute un 0 à la variable si c'est pas divisible par 2
+                    }
+
+                    decimalbinaire /= 2;
+
+                } while (decimalbinaire != 0);
+
+
+
+
+                Console.WriteLine("");
+                Console.Write("Résultat : ");
+                Console.Write(resutatbinairedecimal);
+
+            }
+
+            // Convertion Binaire en Décimal
+            if (choixconvert == 2)
+            {
+                int binairedecimal = 0;
+                int binairedecimalresultat = 0;
+                Console.Write("Entrez un nombre décimal : ");
+                binairedecimal = Convert.ToInt32(Console.ReadLine());//récupère ce que l'utilisateur à écrit
+
+
+
+
+                Console.WriteLine("");
+                Console.Write("Résultat : ");
+                Console.Write(binairedecimal);
+            }
+
+            // convertir Binaire en Octal
+            if (choixconvert == 3)
+            {
+                int binaireoctal = 0;
+                Console.Write("Entrez un nombre décimal : ");
+                binaireoctal = Convert.ToInt32(Console.ReadLine());//récupère ce que l'utilisateur à écrit
+
+
+
+                Console.WriteLine("");
+                Console.Write("Résultat : ");
+                Console.Write(binaireoctal);
+
+            }
+
+            //convertir Octal en Binaire
+            if (choixconvert == 4)
+            {
+                int octalbinaire = 0;
+                Console.Write("Entrez un nombre décimal : ");
+                octalbinaire = Convert.ToInt32(Console.ReadLine());//récupère ce que l'utilisateur à écrit
+
+
+
+                Console.WriteLine("");
+                Console.Write("Résultat : ");
+                Console.Write(octalbinaire);
+
+            }
+
+
+
         }
     }
 }
