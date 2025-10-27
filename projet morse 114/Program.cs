@@ -16,7 +16,7 @@ namespace projet_morse_114
             int choix = 0;
             Console.WriteLine("=== Couteau Suisse – Utilitaires ===");
             Console.WriteLine("1. Convertir du texte en code Morse");
-            Console.WriteLine("2. Convertir des nombres entre différentes bases (Décimal <> Binaire <> Octal)");
+            Console.WriteLine("2. Convertisseur de base");
             Console.WriteLine("3. Stéganographie");
             Console.WriteLine("4. Quitter le programme");
             Console.Write("Entrer votre choix :");
@@ -344,20 +344,46 @@ namespace projet_morse_114
                 Console.Clear();
                 Console.WriteLine("Veuillez entrer le chemin d'un txt que vous voulez décoder :");
                 FilePath = Convert.ToString(Console.ReadLine());//récupère ce que l'utilisateur à écrit
-                string contenuComplet = File.ReadAllText(FilePath);
+                string contenuFichier = File.ReadAllText(FilePath);
+                string contenuCache = "";
 
-
-                foreach (char character in File.ReadAllText(FilePath))
+                // extraction des caractères invisibles
+                foreach (char character in contenuFichier)
                 {
-                    if (character == '\u200B') contenuComplet += ".";
-                    else if (character == '\u200C') contenuComplet += "-";
-                    else if (character == '\u200D') contenuComplet += " ";
-                    else if (character == '\u2060') contenuComplet += "/";
+                    if (character == '\u200B') contenuCache += ".";
+                    else if (character == '\u200C') contenuCache += "-";
+                    else if (character == '\u200D') contenuCache += " ";
+                    else if (character == '\u2060') contenuCache += "/";
                 }
 
-                Console.WriteLine(contenuComplet);
+                // dictionnaire morse -> texte normal
+                Dictionary<string, char> dictionnaireDecode = new Dictionary<string, char>()
+                {
+                    {".-", 'a'}, {"-...", 'b'}, {"-.-.", 'c'}, {"-..", 'd'}, {".", 'e'},
+                    {"..-.", 'f'}, {"--.", 'g'}, {"....", 'h'}, {"..", 'i'}, {".---", 'j'},
+                    {"-.-", 'k'}, {".-..", 'l'}, {"--", 'm'}, {"-.", 'n'}, {"---", 'o'},
+                    {".--.", 'p'}, {"--.-", 'q'}, {".-.", 'r'}, {"...", 's'}, {"-", 't'},
+                    {"..-", 'u'}, {"...-", 'v'}, {".--", 'w'}, {"-..-", 'x'}, {"-.--", 'y'},
+                    {"--..", 'z'}, {"/", ' '}
+                };
 
+                // découpe et décodage du morse
+                string[] lettresMorse = contenuCache.Split(' ');
+                string messageDecode = "";
+
+                foreach (string symbole in lettresMorse)
+                {
+                    if (dictionnaireDecode.ContainsKey(symbole))
+                    {
+                        messageDecode += dictionnaireDecode[symbole];
+                    }
+                }
+
+                Console.WriteLine("");
+                Console.WriteLine("Message caché décodé : ");
+                Console.WriteLine(messageDecode);
             }
+
 
         }
     }
